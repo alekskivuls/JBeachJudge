@@ -8,10 +8,12 @@ import beachJudge.models.User;
 
 public interface AdminBackend {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	void createAccount(User user);
-	
-	
+	void createUser(User user);
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	List<User> getAllUser();
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	void deleteAccount(User user);
+
 }

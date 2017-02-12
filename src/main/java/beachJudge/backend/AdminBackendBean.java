@@ -1,30 +1,35 @@
 
 package beachJudge.backend;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import beachJudge.models.User;
-import beachJudge.repositories.UserRepository;
+import beachJudge.services.UsersService;
 
 /**
  * Implementation of {@link beachJudge.backend.AdminBackend}.
  */
 @Service
 public class AdminBackendBean implements AdminBackend {
-
+	
 	@Autowired
-	UserRepository userRepo;
+	UsersService usersService;
 
 	@Override
-	public void createAccount(User user) {
-		userRepo.save(user);
+	public void createUser(User user) {
+		usersService.createUser(user);
 	}
 	
 	@Override
 	public List<User> getAllUser(){
-		userRepo.findAll();
-		return userRepo.findAll();
+		return usersService.getAllUser();
+	}
+
+	@Override
+	public void deleteAccount(User user) {
+		usersService.deleteUser(user);
 	}
 }
