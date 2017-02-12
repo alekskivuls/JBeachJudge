@@ -13,6 +13,7 @@ import com.vaadin.data.validator.NullValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
@@ -25,6 +26,7 @@ import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import java.util.List;
 import beachJudge.Sections;
 import beachJudge.backend.AdminBackend;
 import beachJudge.models.User;
@@ -45,7 +47,7 @@ public class UserManagementView extends VerticalLayout implements View {
 	@Autowired
 	public UserManagementView(AdminBackend backend) {
 		this.mBackend = backend;
-
+		
 	
 		userGrid = new Grid();
 		userGrid.setCaption("User Information");
@@ -53,15 +55,16 @@ public class UserManagementView extends VerticalLayout implements View {
 		userGrid.setEditorEnabled(true);
 		userGrid.setSelectionMode(SelectionMode.NONE);
 		
-		userGrid.addColumn("Index", Integer.class);
 		userGrid.addColumn("name", String.class);
-		userGrid.addColumn("userID", String.class);
-		
+		userGrid.addColumn("userID", Integer.class);
+		userGrid.addColumn("userName", String.class);
+		userGrid.addColumn("role", String.class);
 		/** Sample User **/
-		for(int i = 0; i < 5; i++){
-			String[] name = {"firstName", "lastName"};
-			userGrid.addRow(i+1, name[0] + ' ' + name[1], "userID");
-		}
+//		for(int i = 0; i < 5; i++){
+//			String[] name = {"firstName", "lastName"};
+//			userGrid.addRow(i+1, name[0] + ' ' + name[1], "userID");
+//		}
+		initializeTable(userGrid, this.mBackend);
 		
 //		this.addComponent(userGrid);
 		
@@ -118,6 +121,9 @@ public class UserManagementView extends VerticalLayout implements View {
 						binder.getField("role").toString());
 				UserManagementView.this.mBackend.createAccount(user);
 				Notification.show("User created");
+				
+				userGrid.addRow( user.getFirstName() + ' ' + user.getLastName(),
+						user.getId(),user.getUserName(),user.getRole().toString());
 			}
 		});
 		form.addComponent(button);
@@ -129,6 +135,21 @@ public class UserManagementView extends VerticalLayout implements View {
 		addComponent(form);
 		
 
+	}
+	
+	public void initializeTable(Grid userGrid, AdminBackend backend){
+		
+		
+		List<User> userList = backend.getAllUser();
+		for(int i = 0; i < userList.size(); i++){
+//			String[] name = {"firstName", "lastName"};
+//			userGrid.addRow(i+1, name[0] + ' ' + name[1], "userID");
+			User user = userList.get(i);
+//			userGrid.addRow(i+1, user.getFirstName() + ' ' + user.getLastName(),
+//					user.getId(), user.getUserName(), user.getRole());
+			userGrid.addRow(user.getFirstName() + ' ' + user.getLastName(),
+					user.getId(),user.getUserName(),user.getRole().toString());
+		}
 	}
 
 	@Override
