@@ -1,6 +1,11 @@
 
 package beachJudge;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.sidebar.components.ValoSideBar;
+import org.vaadin.spring.sidebar.security.VaadinSecurityItemFilter;
+
 import com.vaadin.navigator.Navigator;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
@@ -12,11 +17,6 @@ import com.vaadin.ui.UI;
 
 import beachJudge.views.AccessDeniedView;
 import beachJudge.views.ErrorView;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.sidebar.components.ValoSideBar;
-import org.vaadin.spring.sidebar.security.VaadinSecurityItemFilter;
 
 /**
  * Full-screen UI component that allows the user to navigate between views, and

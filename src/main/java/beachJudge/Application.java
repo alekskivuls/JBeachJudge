@@ -26,41 +26,43 @@ public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+		System.out.println();
 	}
-	
-	 /**
-     * Provide custom system messages to make sure the application is reloaded when the session expires.
-     */
-    @Bean
-    SystemMessagesProvider systemMessagesProvider() {
-        return new SystemMessagesProvider() {
-            @Override
-            public SystemMessages getSystemMessages(SystemMessagesInfo systemMessagesInfo) {
-                CustomizedSystemMessages systemMessages = new CustomizedSystemMessages();
-                systemMessages.setSessionExpiredNotificationEnabled(false);
-                return systemMessages;
-            }
-        };
-    }
 
-    /**
-     * Configure the authentication manager.
-     */
-    @Configuration
-    static class AuthenticationConfiguration implements AuthenticationManagerConfigurer {
+	/**
+	 * Provide custom system messages to make sure the application is reloaded
+	 * when the session expires.
+	 */
+	@Bean
+	SystemMessagesProvider systemMessagesProvider() {
+		return new SystemMessagesProvider() {
+			@Override
+			public SystemMessages getSystemMessages(SystemMessagesInfo systemMessagesInfo) {
+				CustomizedSystemMessages systemMessages = new CustomizedSystemMessages();
+				systemMessages.setSessionExpiredNotificationEnabled(false);
+				return systemMessages;
+			}
+		};
+	}
 
-    	@Autowired
+	/**
+	 * Configure the authentication manager.
+	 */
+	@Configuration
+	static class AuthenticationConfiguration implements AuthenticationManagerConfigurer {
+
+		@Autowired
 		private UsersDetailService users;
-    	
-        @Override
-        public void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(users);
+
+		@Override
+		public void configure(AuthenticationManagerBuilder auth) throws Exception {
+			auth.userDetailsService(users);
 		}
 	}
 
-    /**
-     * Insert data in the database for development purposes
-     */
+	/**
+	 * Insert data in the database for development purposes
+	 */
 	@Bean
 	public CommandLineRunner loadData(UserRepository repository) {
 		return (args) -> {
@@ -74,8 +76,8 @@ public class Application {
 				System.out.println(user.toString());
 			}
 			System.out.println();
-			
+
 		};
 	}
-    
+
 }

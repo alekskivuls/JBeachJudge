@@ -19,15 +19,15 @@ import beachJudge.Sections;
 @FontAwesomeIcon(FontAwesome.POWER_OFF)
 public class LogoutOperation implements Runnable {
 
-    private final VaadinManagedSecurity vaadinSecurity;
+	private final VaadinManagedSecurity vaadinSecurity;
 
-    @Autowired
-    public LogoutOperation(VaadinManagedSecurity vaadinSecurity) {
-        this.vaadinSecurity = vaadinSecurity;
-    }
+	@Autowired
+	public LogoutOperation(VaadinManagedSecurity vaadinSecurity) {
+		this.vaadinSecurity = vaadinSecurity;
+	}
 
-    @Override
-    public void run() {
-        vaadinSecurity.logout("?goodbye");
-    }
+	@Override
+	public void run() {
+		vaadinSecurity.logout("?goodbye");
+	}
 }

@@ -1,5 +1,13 @@
 package beachJudge;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.security.VaadinSecurity;
+import org.vaadin.spring.security.util.SecurityExceptionUtils;
+import org.vaadin.spring.security.util.SuccessfulLoginEvent;
+
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.DefaultErrorHandler;
@@ -8,18 +16,12 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
-import org.vaadin.spring.security.VaadinSecurity;
-import org.vaadin.spring.security.util.SuccessfulLoginEvent;
-import org.vaadin.spring.security.util.SecurityExceptionUtils;
 
 /**
- * Main application UI that shows either the {@link beachJudge.MainScreen} or the
- * {@link beachJudge.LoginScreen}, depending on whether there is an authenticated
- * user or not. Also note that the UI is using web socket based push.
+ * Main application UI that shows either the {@link beachJudge.MainScreen} or
+ * the {@link beachJudge.LoginScreen}, depending on whether there is an
+ * authenticated user or not. Also note that the UI is using web socket based
+ * push.
  */
 @SpringUI
 @Theme(ValoTheme.THEME_NAME)

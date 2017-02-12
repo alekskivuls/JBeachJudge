@@ -7,7 +7,7 @@ import beachJudge.services.UsersService;
 
 @Service
 public class BackendBean implements Backend {
-	
+
 	@Autowired
 	UsersService userService;
 }
