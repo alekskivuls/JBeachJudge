@@ -13,16 +13,22 @@ import com.vaadin.data.validator.NullValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.FooterRow;
+import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 
+import java.util.List;
 import beachJudge.Sections;
 import beachJudge.backend.AdminBackend;
 import beachJudge.models.User;
@@ -31,18 +37,40 @@ import beachJudge.models.User;
  * View that is available to administrators only.
  */
 @Secured("ROLE_ADMIN")
-@SpringView(name = "admin")
-@SideBarItem(sectionId = Sections.VIEWS, caption = "Admin View")
+@SpringView(name = "user-management")
+@SideBarItem(sectionId = Sections.VIEWS, caption = "User Management")
 @FontAwesomeIcon(FontAwesome.COGS)
-public class AdminView extends CustomComponent implements View {
+public class UserManagementView extends VerticalLayout implements View {
 
 	private final AdminBackend mBackend;
+	Grid userGrid;
 
 	@SuppressWarnings("deprecation")
 	@Autowired
-	public AdminView(AdminBackend backend) {
+	public UserManagementView(AdminBackend backend) {
 		this.mBackend = backend;
-
+		
+	
+		userGrid = new Grid();
+		userGrid.setCaption("User Information");
+		userGrid.setSizeFull();
+		userGrid.setEditorEnabled(true);
+		userGrid.setSelectionMode(SelectionMode.SINGLE);
+		
+		userGrid.addColumn("name", String.class);
+		userGrid.addColumn("userID", Integer.class);
+		userGrid.addColumn("userName", String.class);
+		userGrid.addColumn("role", String.class);
+		/** Sample User **/
+//		for(int i = 0; i < 5; i++){
+//			String[] name = {"firstName", "lastName"};
+//			userGrid.addRow(i+1, name[0] + ' ' + name[1], "userID");
+//		}
+		initializeTable(userGrid, this.mBackend);
+		
+//		this.addComponent(userGrid);
+		
+		
 		PropertysetItem item = new PropertysetItem();
 		item.addItemProperty("fName", new ObjectProperty<String>(""));
 		item.addItemProperty("lName", new ObjectProperty<String>(""));
@@ -93,15 +121,54 @@ public class AdminView extends CustomComponent implements View {
 				User user = new User(binder.getField("username").toString(), binder.getField("password").toString(),
 						binder.getField("fName").toString(), binder.getField("lName").toString(),
 						binder.getField("role").toString());
-				AdminView.this.mBackend.createAccount(user);
+				UserManagementView.this.mBackend.createAccount(user);
 				Notification.show("User created");
+				
+				userGrid.addRow( user.getFirstName() + ' ' + user.getLastName(),
+						user.getId(),user.getUserName(),user.getRole().toString());
 			}
 		});
 		form.addComponent(button);
 
 		form.setMargin(new MarginInfo(15));
-		setCompositionRoot(form);
+		form.addComponent(userGrid);
+		
+		
+		Button removeUserButton = new Button("Remove", new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+				// Delete all selected data items
+			    for (Object itemId: userGrid.getSelectedRows())
+			    	userGrid.getContainerDataSource().removeItem(itemId);
 
+			    // Otherwise out of sync with container
+			    userGrid.getSelectionModel().reset();
+			}
+		});
+//		setCompositionRoot(form);
+		addComponent(userGrid);
+		addComponent(removeUserButton);
+		addComponent(form);
+		
+
+	}
+	
+	public void initializeTable(Grid userGrid, AdminBackend backend){
+		
+		
+		List<User> userList = backend.getAllUser();
+		for(int i = 0; i < userList.size(); i++){
+//			String[] name = {"firstName", "lastName"};
+//			userGrid.addRow(i+1, name[0] + ' ' + name[1], "userID");
+			User user = userList.get(i);
+//			userGrid.addRow(i+1, user.getFirstName() + ' ' + user.getLastName(),
+//					user.getId(), user.getUserName(), user.getRole());
+			userGrid.addRow(user.getFirstName() + ' ' + user.getLastName(),
+					user.getId(),user.getUserName(),user.getRole().toString());
+		}
 	}
 
 	@Override
