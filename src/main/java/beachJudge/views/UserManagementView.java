@@ -19,12 +19,14 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.FooterRow;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 
 import java.util.List;
 import beachJudge.Sections;
@@ -53,7 +55,7 @@ public class UserManagementView extends VerticalLayout implements View {
 		userGrid.setCaption("User Information");
 		userGrid.setSizeFull();
 		userGrid.setEditorEnabled(true);
-		userGrid.setSelectionMode(SelectionMode.NONE);
+		userGrid.setSelectionMode(SelectionMode.SINGLE);
 		
 		userGrid.addColumn("name", String.class);
 		userGrid.addColumn("userID", Integer.class);
@@ -130,8 +132,25 @@ public class UserManagementView extends VerticalLayout implements View {
 
 		form.setMargin(new MarginInfo(15));
 		form.addComponent(userGrid);
+		
+		
+		Button removeUserButton = new Button("Remove", new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+				// Delete all selected data items
+			    for (Object itemId: userGrid.getSelectedRows())
+			    	userGrid.getContainerDataSource().removeItem(itemId);
+
+			    // Otherwise out of sync with container
+			    userGrid.getSelectionModel().reset();
+			}
+		});
 //		setCompositionRoot(form);
 		addComponent(userGrid);
+		addComponent(removeUserButton);
 		addComponent(form);
 		
 
