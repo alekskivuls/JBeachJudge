@@ -21,7 +21,7 @@ import beachJudge.backend.Backend;
 @Secured("ROLE_ADMIN")
 @SpringView(name = "user-management")
 @SideBarItem(sectionId = Sections.VIEWS, caption = "User Management View", order = 0)
-@FontAwesomeIcon(FontAwesome.HOME)
+@FontAwesomeIcon(FontAwesome.USERS)
 public class UserManagementView extends VerticalLayout implements View{
 
 	final Backend mBackend;
@@ -32,7 +32,7 @@ public class UserManagementView extends VerticalLayout implements View{
 		setSizeFull();
 		setMargin(true);
 
-		Label header = new Label("Welcome to Beach Judge!");
+		Label header = new Label("User Management");
 		addComponent(header);
 		
 		userGrid = new Grid();
