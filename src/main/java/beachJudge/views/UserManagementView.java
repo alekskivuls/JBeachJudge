@@ -32,6 +32,7 @@ import java.util.List;
 import beachJudge.Sections;
 import beachJudge.backend.AdminBackend;
 import beachJudge.models.User;
+import beachJudge.services.UsersService;
 
 /**
  * View that is available to administrators only.
@@ -133,11 +134,13 @@ public class UserManagementView extends VerticalLayout implements View {
 		form.addComponent(userGrid);
 
 		Button removeUserButton = new Button("Remove", new Button.ClickListener() {
-
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Delete all selected data items
 				for (Object itemId : userGrid.getSelectedRows()) {
+					// Don't delete current account
+					if (mBackend.getCurrentUser().getId() == (userList.get((int) itemId - 1)).getId())
+						break;
 					userGrid.getContainerDataSource().removeItem(itemId);
 					mBackend.deleteAccount(userList.remove((int) itemId - 1));
 				}

@@ -15,5 +15,7 @@ public interface AdminBackend {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	void deleteAccount(User user);
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	User getCurrentUser();
 }

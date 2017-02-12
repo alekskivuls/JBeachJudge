@@ -32,4 +32,9 @@ public class AdminBackendBean implements AdminBackend {
 	public void deleteAccount(User user) {
 		usersService.deleteUser(user);
 	}
+
+	@Override
+	public User getCurrentUser() {
+		return usersService.getCurrentUser();
+	}
 }
