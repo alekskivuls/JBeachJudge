@@ -2,7 +2,8 @@
 Java version of Beach Judge. Grade programs for programming team.
 
 ## Dev Setup
-For easy setup install [spring tool suite](https://spring.io/tools)
+For easy setup install [spring tool suite.](https://spring.io/tools)
+
 For project import into STS 'File > Import > Maven > Check out Maven Projects from SCM >  Paste Git repo url > Finish`'
 
 ## Running
